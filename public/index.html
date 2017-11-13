@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html ng-app="katApp">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karnataka Administrative Tribunal Causelist Search</title>
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+<meta charset="UTF-8">
+<meta name="description" content="Search KAT causelists by entering Advocate Name. Karnataka Administrative Tribunal causelist can be searched.">
+<meta name="keywords" content="KAT, HighCourt, Court, Causelist, Karnataka Administrative Tribunal, Case, Advocate, Lawyer">
+<meta name="author" content="Anirudh Mathad">
+<meta property="og:title" content="K.A.T causelist search" />
+<link rel="SHORTCUT ICON" href="nyayadevatha.jpg" />
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-88013051-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</head>
+<body>
+ <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+
+    <!-- Angular Material Javascript now available via Google CDN; version 0.9.4 used here -->
+    <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+
+	<header align="center">
+		<h2>Welcome to K.A.T causelist search portal</h2>
+		<img src="devatha.png" align="center" height="100" width="100">
+		<p>Search for Karnataka Administrative Tribunal Causelists by Advocate Names</p>
+	</header>
+
+	<div ng-controller="katController" class="main-content">
+		<div class="col-md-6 col-md-offset-3">
+
+			<div class="panel panel-primary">
+				<div class="panel-heading">Search for KAT cases</div>
+
+				<div class="panel-body">
+					<form>
+						<fieldset class="form-group">
+							<label for="formGroupExampleInput">Advocate Name</label> <input
+								ng-model="name" type="text" class="form-control"
+								id="formGroupExampleInput"
+								placeholder="Enter advocate name For ex: For Ram Kumar. You can enter Ram , Kumar or Ram Kumar " required />
+						</fieldset>
+
+						<fieldset class="form-group">
+						<h4>Causelist Date</h4><md-datepicker ng-model="date" md-placeholder="Case Date" width="700px" required></md-datepicker>
+						<!--<label for="formGroupExampleInput2">Date</label> <input
+								ng-model="date" type="date" class="form-control"
+								id="formGroupExampleInput2"
+								placeholder="Tomorrow's Date or any date" required/>-->
+						</fieldset>
+						<fieldset class="form-group">
+							<input type="submit" class="btn btn-primary"
+								ng-click="getCases(date, name)" ng-disabled="casesLoading" value="Get Causelist">
+								<div ng-show="casesLoading">Loading... Please wait</div>
+						</fieldset>
+						<p style="color:red"><b>{{errorMsg}}</b></p>
+					</form>
+				</div>
+			</div>
+			<h3 style="color:green" ng-show="loadMessage">{{loadMessage}}</h3>
+			<table class="table">
+				<tr>
+					<th>Case Date</th>
+					<th>Court Hall</th>
+					<th>List Num</th>
+					<th>Serial Num</th>
+					<th>Case</th>
+					<th>Full Causelist</th>
+				</tr>
+				<tr ng-repeat="case in casesList">
+					<td>{{dateStr}}</td>
+					<td>{{case.courtHallNum}}</td>
+					<td>{{case.listNum}}</td>
+					<td>{{case.serialNum}}</td>
+					<td>{{case.content}}</td>
+					<td><a ng-href="{{case.pdfHyperLink}}" target="_blank">Court Hall: {{case.courtHallNum}} List: {{case.listNum}}</a></td>
+				</tr>
+			</table>
+
+		</div>
+
+<script src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=68861a41-c883-429b-b2ea-a787b25e8deb&storeId=kat059-20"></script>
+	</div>
+
+	<script src="angular.min.js"></script>
+	<script src="controller.js"></script>
+	<script src="moment.min.js"></script>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
