@@ -14,7 +14,9 @@
 <meta name="author" content="Anirudh Mathad">
 <meta property="og:title" content="K.A.T causelist search" />
 <link rel="SHORTCUT ICON" href="nyayadevatha.jpg" />
-
+<style>
+	.highlighted { background: yellow }
+  </style>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -41,60 +43,56 @@
 		<p>Search for Karnataka Administrative Tribunal Causelists by Advocate Names</p>
 	</header>
 
-	<div ng-controller="katController" class="main-content">
-		<div class="col-md-6 col-md-offset-3">
-
-			<div class="panel panel-primary">
-				<div class="panel-heading">Search for KAT cases</div>
-
-				<div class="panel-body">
-					<form>
-						<fieldset class="form-group">
-							<label for="formGroupExampleInput">Advocate Name</label> <input
-								ng-model="name" type="text" class="form-control"
-								id="formGroupExampleInput"
-								placeholder="Enter advocate name For ex: For Ram Kumar. You can enter Ram , Kumar or Ram Kumar " required />
-						</fieldset>
-
-						<fieldset class="form-group">
-						<h4>Causelist Date</h4><md-datepicker ng-model="date" md-placeholder="Case Date" width="700px" required></md-datepicker>
-						<!--<label for="formGroupExampleInput2">Date</label> <input
-								ng-model="date" type="date" class="form-control"
-								id="formGroupExampleInput2"
-								placeholder="Tomorrow's Date or any date" required/>-->
-						</fieldset>
-						<fieldset class="form-group">
-							<input type="submit" class="btn btn-primary"
-								ng-click="getCases(date, name)" ng-disabled="casesLoading" value="Get Causelist">
-								<div ng-show="casesLoading">Loading... Please wait</div>
-						</fieldset>
-						<p style="color:red"><b>{{errorMsg}}</b></p>
-					</form>
+		<div ng-controller="katController" class="main-content">
+				<div class="col-md-6 col-md-offset-3">
+					<div class="panel panel-primary">
+						<div class="panel-heading">Search for KAT cases</div>
+						<div class="panel-body">
+							<form>
+								<fieldset class="form-group">
+									<label for="formGroupExampleInput">Advocate Name</label> <input
+										ng-model="name" type="text" class="form-control"
+										id="formGroupExampleInput"
+										placeholder="Enter advocate name For ex: For Ram Kumar. You can enter Ram , Kumar or Ram Kumar " required />
+								</fieldset>
+		
+								<fieldset class="form-group">
+								<h4>Causelist Date</h4><md-datepicker ng-model="date" md-placeholder="Case Date" width="700px" required></md-datepicker>
+								<!--<label for="formGroupExampleInput2">Date</label> <input
+										ng-model="date" type="date" class="form-control"
+										id="formGroupExampleInput2"
+										placeholder="Tomorrow's Date or any date" required/>-->
+								</fieldset>
+								<fieldset class="form-group">
+									<input type="submit" class="btn btn-primary"
+										ng-click="getCases(date, name)" ng-disabled="casesLoading" value="Get Causelist">
+										<div ng-show="casesLoading">Loading... Please wait</div>
+								</fieldset>
+								<p style="color:red"><b>{{errorMsg}}</b></p>
+							</form>
+						</div>
+					</div>
+					<h3 style="color:green" ng-show="loadMessage">{{loadMessage}}</h3>
+					<table class="table">
+						<tr>
+							<th>Case Date</th>
+							<th>Court Hall</th>
+							<th>List Num</th>
+							<th>Serial Num</th>
+							<th>Case</th>
+							<th>Full Causelist</th>
+						</tr>
+						<tr ng-repeat="case in casesList | filter: name">
+							<td>{{dateStr}}</td>
+							<td>{{case.courtHallNum}}</td>
+							<td>{{case.listNum}}</td>
+							<td>{{case.serialNum}}</td>
+							<td  ng-bind-html="case | highlight:name">{{case.content}}</td>
+							<td><a ng-href="{{case.pdfHyperLink}}" target="_blank">Court Hall: {{case.courtHallNum}} List: {{case.listNum}}</a></td>
+						</tr>
+					</table>
+		
 				</div>
-			</div>
-			<h3 style="color:green" ng-show="loadMessage">{{loadMessage}}</h3>
-			<table class="table">
-				<tr>
-					<th>Case Date</th>
-					<th>Court Hall</th>
-					<th>List Num</th>
-					<th>Serial Num</th>
-					<th>Case</th>
-					<th>Full Causelist</th>
-				</tr>
-				<tr ng-repeat="case in casesList">
-					<td>{{dateStr}}</td>
-					<td>{{case.courtHallNum}}</td>
-					<td>{{case.listNum}}</td>
-					<td>{{case.serialNum}}</td>
-					<td>{{case.content}}</td>
-					<td><a ng-href="{{case.pdfHyperLink}}" target="_blank">Court Hall: {{case.courtHallNum}} List: {{case.listNum}}</a></td>
-				</tr>
-			</table>
-
-		</div>
-
-<script src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=68861a41-c883-429b-b2ea-a787b25e8deb&storeId=kat059-20"></script>
 	</div>
 
 	<script src="angular.min.js"></script>
@@ -105,5 +103,10 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="js/bootstrap.min.js"></script>
+	<br/>
+	<hr>
+	<div ng-controller="adWidgetController" class="main-content">
+		<!-- <script src="https://z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=68861a41-c883-429b-b2ea-a787b25e8deb&storeId=kat059-20"></script> -->
+	</div>
 </body>
 </html>

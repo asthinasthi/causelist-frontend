@@ -1,9 +1,24 @@
+
+
 var app = angular.module('katApp', ['ngMaterial']);
 // app.constant('base', {url : "http://localhost:3000"} )
 // app.constant('base', {url : "http://52.88.255.121:3000"} )
 app.constant('base', {url : "http://karnataka-court-causelist.net:8081"} )
 
-app.controller('katController', function($http, $scope, base) {
+/*Ad Widget controller */
+app.controller('adWidgetController', function($http, $scope, $timeout, $document){
+	// $scope.widgetUrl = "https://z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=68861a41-c883-429b-b2ea-a787b25e8deb&storeId=kat059-20"
+	// var div = angular.element('<div><script src="https://z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US&adInstanceId=68861a41-c883-429b-b2ea-a787b25e8deb&storeId=kat059-20"></script></div>');
+	// var body = $document.find('body').eq(0)
+	// $timeout(function(){
+	// 	body.append(div)
+	// 	$scope.$apply()
+	// }, 3000)
+	
+})
+
+
+app.controller('katController', function($http, $scope, base, $sce) {
 	$scope.casesList = [];
 	$scope.casesLoading = false;
 
@@ -25,20 +40,20 @@ app.controller('katController', function($http, $scope, base) {
 		console.log('Date: ' + $scope.dateStr)
 		$http.get(base.url + '/causelist/available?date=' + $scope.dateStr)
 		.success(function(jsonResult){
-			console.log("Result: " + jsonResult);
+			console.log("Causelist available : " + jsonResult);
 			$scope.causeListAvailable = jsonResult;
 			if(!$scope.causeListAvailable){
 				$scope.errorMsg = 'Causelist is not uploaded yet. Please try after some time...';
-				$scope.casesList = {};
+				$scope.casesList = [];
 				$scope.casesLoading = false;
 				return;
 			} else {
-				$scope.casesList = {};
+				$scope.casesList = [];
 				$scope.errorMsg = '';
 			}
 			$http.get(base.url + '/causelist?date=' + $scope.dateStr + '&advocateName=' + name)
 			.success(function(jsonResult) {
-				console.log("Result: " + jsonResult);
+				console.log("Cases: " + jsonResult);
 				$scope.casesList = jsonResult;
 				$scope.casesLoading = false;
 				if($scope.casesList.length > 0){
@@ -83,4 +98,12 @@ app.controller('katController', function($http, $scope, base) {
 		console.log(date.split('T')[0])
 		return date.split('T')[0]
 	}
-});
+})
+app.filter('highlight', function($sce){
+	return function(text, phrase){
+		if(phrase) text = text.content.replace(new RegExp('('+phrase+')','gi'),
+		'<span class="highlighted">$1</span>')
+		// console.log('Replaced text: ', text)
+		return $sce.trustAsHtml(text)
+	}
+})
